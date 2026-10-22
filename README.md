@@ -34,7 +34,17 @@ git clone https://github.com/Aexplorer1/Scientist-Subagents.git "$HOME/.agents/s
 python3 "$HOME/.agents/skills/dispatch-scientist-subagents/scripts/check_environment.py"
 ```
 
-已有同名文件夹时，请先检查现有内容，不要直接覆盖。配置了其他技能目录的客户端也可安装到它实际扫描的路径，例如部分现有安装使用的 `$CODEX_HOME/skills`（默认 `~/.codex/skills`）；同一 skill 只保留一份，避免重复发现。也可以在 Codex 中明确让内置 `$skill-installer` 从本仓库根目录 `.` 安装，目标名称使用 `dispatch-scientist-subagents`。
+已有同名文件夹时，请先检查现有内容，不要直接覆盖。配置了其他技能目录的客户端也可安装到它实际扫描的路径，例如部分现有安装使用的 `$CODEX_HOME/skills`（默认 `~/.codex/skills`）；同一 skill 只保留一份，避免重复发现。
+
+也可以在 Codex 中让内置安装器安装，明确发送：
+
+```text
+请使用 $skill-installer 从 Aexplorer1/Scientist-Subagents 安装 skill，
+仓库路径为 .，安装名为 dispatch-scientist-subagents。
+请明确使用 --method download，并确认 scripts/ 和 agents/ 子目录完整。
+```
+
+本机安装器实测：`--path . --method git` 的稀疏检出会漏掉子目录，虽然输出安装成功，skill 实际并不完整。请使用上面的完整 `git clone`，或明确指定下载模式；下载失败时不要盲目回退到此 Git 稀疏检出方式。
 
 ## 3. 开启相关设置
 
@@ -110,4 +120,4 @@ python -m unittest discover -s tests -v
 
 仓库根目录就是 skill 根目录；`agents/openai.yaml` 是技能显示元数据，不是 `[agents]` 配置，也不能注册原生工具。
 
-发布前本地检查（2026-10-22）：13 项测试通过，skill 结构校验通过；将包复制到全新、带空格的项目路径后，Codex CLI 0.163.0 的原生 `skills/list` 成功发现该 skill，读取显示名且状态为启用；隔离配置中打开两个 feature 后，环境检查通过。本次未启动模型执行完整双代理任务，也未对各平台桌面界面进行验收。
+发布检查（2026-10-22）：13 项本地测试及 skill 结构校验通过；将包复制到全新、带空格的项目路径后，Codex CLI 0.163.0 的原生 `skills/list` 成功发现该 skill，读取显示名且状态为启用；隔离配置中打开两个 feature 后，环境检查通过。已从公开仓库使用内置安装器下载模式重新安装，名称脚本运行通过；GitHub Actions 六组平台 / Python 版本组合通过。本次未启动模型执行完整双代理任务，也未对各平台桌面界面进行验收。
