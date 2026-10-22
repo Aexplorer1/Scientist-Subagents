@@ -1,0 +1,7 @@
+interface:
+  display_name: "Scientist Subagents"
+  short_description: "Dispatch expert subagents with scientist codenames"
+  default_prompt: "Use $dispatch-scientist-subagents to split this work into expert subagents whose scientist names appear in the sidebar."
+
+policy:
+  allow_implicit_invocation: false
